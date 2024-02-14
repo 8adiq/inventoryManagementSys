@@ -56,6 +56,20 @@ class Item:
         item_list.append(it_details)
         save_items(item_list)
 
+    @staticmethod
+    def find_item(name_to_find, items_list):
+        """Function to find a item"""
+        found_item = None
+        for item in items_list:
+            if item["Name"].lower() == name_to_find.lower():
+                found_item = item
+            break
+
+        if found_item:
+            print("Item found")
+            for key, value in found_item.items():
+                print(f"{key}:  {value}")
+
 
 print("\nchoose an option")
 print("1. Business Owner")
@@ -87,7 +101,9 @@ if first_choice == 1:
 
     elif choice == 2:
         print("Find an item")
+        name_to_find = str(input("Enter the name of the item you are looking for  "))
 
+        Item.find_item(name_to_find, items_list)
     elif choice == 3:
         print("Update an item")
 
