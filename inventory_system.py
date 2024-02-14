@@ -76,7 +76,7 @@ if first_choice == 1:
     choice = int(input("Enter option 1,2,3,4 or 5 to proceed  "))
 
     if choice == 1:
-        print("Add a new item")
+
         name = str(input("Enter the name of the item  "))
         price = int(input("Enter the price of the item  "))
         quantity = int(input("Enter the quantity of the item  "))
