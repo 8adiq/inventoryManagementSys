@@ -31,6 +31,9 @@ def load_items():
         return []
 
 
+items_list = load_items()
+
+
 class Item:
     """Class for creating an item"""
 
@@ -45,12 +48,13 @@ class Item:
         item_dict = {"Name": self.name, "Quantity": self.quantity, "Price": self.price}
         return item_dict
 
-    # def add_item(item, item_list):
-    # """Function to add an item to list"""
+    @staticmethod
+    def add_item(item, item_list):
+        """Function to add an item to list"""
 
-    # it_details = item.item_details()
-    # item_list.append(it_details)
-    # save_items(item_list)
+        it_details = item.item_details()
+        item_list.append(it_details)
+        save_items(item_list)
 
 
 print("\nchoose an option")
@@ -73,6 +77,13 @@ if first_choice == 1:
 
     if choice == 1:
         print("Add a new item")
+        name = str(input("Enter the name of the item  "))
+        price = int(input("Enter the price of the item  "))
+        quantity = int(input("Enter the quantity of the item  "))
+
+        item = Item(name, quantity, price)
+
+        Item.add_item(item, items_list)
 
     elif choice == 2:
         print("Find an item")
