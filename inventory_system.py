@@ -69,6 +69,38 @@ class Item:
             print("Item found")
             for key, value in found_item.items():
                 print(f"{key}:  {value}")
+        else:
+            print("There is no item with the name {name_to_find}")
+
+    @staticmethod
+    def update_item(name_to_update, item_list):
+        """Function to update the details of an item"""
+        item_to_update = None
+        for item in item_list:
+            if item["Name"].lower() == name_to_update.lower():
+                item_to_update = item
+            break
+        if item_to_update:
+            print("\nChoose an what you want to update")
+            print("1. Quantity")
+            print("2. Price")
+
+            quantity_or_price = int(input("What item do you wish to update  "))
+
+            if quantity_or_price == 1:
+                new_quantity = int(input("Enter the new quantity  "))
+                item_to_update["Quantity"] = new_quantity
+                print("Quantity successfully updated")
+                # show updated item
+
+            else:
+                new_price = int(input("Enter the new price  "))
+                item_to_update["Price"] = new_price
+                print("Price successfully added")
+                # Show updated item
+        save_items(item_list)
+
+    # def delete_item(index,item_list):
 
 
 print("\nchoose an option")
@@ -106,6 +138,9 @@ if first_choice == 1:
         Item.find_item(name_to_find, items_list)
     elif choice == 3:
         print("Update an item")
+        name_to_update = str(input("Enter the name of the item you want to update  "))
+
+        Item.update_item(name_to_update, items_list)
 
     elif choice == 4:
         print("Delete an item")
