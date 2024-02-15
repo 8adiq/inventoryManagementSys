@@ -115,6 +115,32 @@ class Item:
         for i, items in enumerate(item_list):
             print(f"{i+1} : {items["Name"]}")
 
+    @staticmethod
+    def after_purchase(item_list):
+        """Function to adjust the quantity after a sale has been made"""
+
+        name = str(input("Enter the name of the item  "))
+        quantity = int(input("Enter the quantity of the item  "))
+
+        for item in item_list:
+               if item['Name'].lower() == name.lower():
+                item["Quantity"] -= quantity
+        print("Item purchased")
+        save_items(item_list)
+
+    @staticmethod
+    def return_item(item_list):
+        """Function to adjust the quantity of a item after a return"""
+
+        name = str(input("Enter the name of the item  "))
+        quantity = int(input("Enter the quantity of the item  "))
+
+        for item in item_list:
+            if item["Name"].lower() == name.lower():
+                item['Quantity'] += quantity
+        print("Item Returned")
+        save_items(item_list)
+
 
 # First User interaction
 print("\nchoose an option")
@@ -184,13 +210,20 @@ else:
     choice = int(input("Enter option 1,2 or 3  "))
 
     if choice == 1:
-        print("Purchase an item")
+        # Purchasing an item
+
+        Item.after_purchase(items_list)
 
     elif choice == 2:
         print("Return an item")
+
+        Item.return_item(items_list)
 
     else:
         print("\nchoose an option")
         print("1. Business Owner")
         print("2. Customer")
         print("3. Exit program")
+
+        first_choice = int(input("Are you a Business Owner or a Customer  "))
+
