@@ -100,9 +100,23 @@ class Item:
                 # Show updated item
         save_items(item_list)
 
-    # def delete_item(index,item_list):
+    @staticmethod
+    def delete_item(index, item_list):
+        """Function to delete an item"""
+
+        if 0 <= index < len(item_list):
+            del item_list[index]
+            print("Item has been deleted")
+        else:
+            print("Invalid index. No Item has been deleted")
+        
+        save_items(items_list)
+        print("\nItem list")
+        for i, items in enumerate(item_list):
+            print(f"{i+1} : {items["Name"]}")
 
 
+# First User interaction
 print("\nchoose an option")
 print("1. Business Owner")
 print("2. Customer")
@@ -132,24 +146,33 @@ if first_choice == 1:
         Item.add_item(item, items_list)
 
     elif choice == 2:
-        print("Find an item")
         name_to_find = str(input("Enter the name of the item you are looking for  "))
 
         Item.find_item(name_to_find, items_list)
     elif choice == 3:
-        print("Update an item")
         name_to_update = str(input("Enter the name of the item you want to update  "))
 
         Item.update_item(name_to_update, items_list)
 
     elif choice == 4:
-        print("Delete an item")
+        print("\nItem list")
+        for i, items in enumerate(items_list):
+            print(f"{i+1} : {items["Name"]}")
+
+        index_to_delete = input("Enter the index of the item you want to delete  ")
+
+        if index_to_delete.isdigit():
+            index_to_delete = int(index_to_delete) -1
+            Item.delete_item(index_to_delete,items_list)
 
     else:
         print("\nchoose an option")
         print("1. Business Owner")
         print("2. Customer")
         print("3. Exit program")
+
+        first_choice = int(input("Are you a Business Owner or a Customer  "))
+
 
 
 else:
