@@ -157,7 +157,8 @@ if first_choice == 1:
     print("2. Find an item")
     print("3. Update an item")
     print("4. Delete an item")
-    print("5. Back")
+    print("5. Show all items")
+    print("6. Back")
 
     choice = int(input("Enter option 1,2,3,4 or 5 to proceed  "))
 
@@ -190,6 +191,12 @@ if first_choice == 1:
         if index_to_delete.isdigit():
             index_to_delete = int(index_to_delete) -1
             Item.delete_item(index_to_delete,items_list)
+
+    elif choice == 5:
+        print("\n  Item list")
+        print("    Name   Quantity    Price")
+        for i, items in enumerate(items_list):
+          print(f"{i+1} : {items["Name"]}     {items["Quantity"]}         {items["Price"]} ")
 
     else:
         print("\nchoose an option")
