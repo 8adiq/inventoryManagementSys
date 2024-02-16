@@ -20,7 +20,6 @@ def save_items(items):
     with open("items.json", "w", encoding="utf-8") as file:
         json.dump(items, file)
 
-
 def load_items():
     """Loading saved items from a json file"""
     try:
@@ -30,10 +29,21 @@ def load_items():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
-
 items_list = load_items()
 
 
+    
+def get_positive_number(prompt):
+         """Function to make sure user enters a positive number"""
+         while True:
+             try:
+                 value = int(input(prompt))
+                 if value < 0 :
+                     print("Please enter a positive number")
+                     continue
+                 return value
+             except ValueError:
+                 print("Invalid Input. Enter a valid integer")
 class Item:
     """Class for creating an item"""
 
@@ -44,10 +54,9 @@ class Item:
 
     def item_details(self):
         """Function to gather the item details into a dictionary"""
-
-        item_dict = {"Name": self.name, "Quantity": self.quantity, "Price": self.price}
-        return item_dict
-
+        return {"Name": self.name, "Quantity": self.quantity, "Price": self.price}
+    
+         
     @staticmethod
     def add_item(item, item_list):
         """Function to add an item to list"""
@@ -63,7 +72,7 @@ class Item:
         for item in items_list:
             if item["Name"].lower() == name_to_find.lower():
                 found_item = item
-            break
+                break
 
         if found_item:
             print("Item found")
@@ -79,23 +88,21 @@ class Item:
         for item in item_list:
             if item["Name"].lower() == name_to_update.lower():
                 item_to_update = item
-            break
+                break
         if item_to_update:
             print("\nChoose an what you want to update")
             print("1. Quantity")
             print("2. Price")
 
-            quantity_or_price = int(input("What item do you wish to update  "))
+            quantity_or_price = get_positive_number("What item do you wish to update  ")
 
             if quantity_or_price == 1:
-                new_quantity = int(input("Enter the new quantity  "))
-                item_to_update["Quantity"] = new_quantity
+                item_to_update["Quantity"] = get_positive_number("Enter the new quantity  ")
                 print("Quantity successfully updated")
                 # show updated item
 
             else:
-                new_price = int(input("Enter the new price  "))
-                item_to_update["Price"] = new_price
+                item_to_update["Price"] = get_positive_number("Enter the new price  ")
                 print("Price successfully added")
                 # Show updated item
         save_items(item_list)
@@ -114,6 +121,13 @@ class Item:
         print("\nItem list")
         for i, items in enumerate(item_list):
             print(f"{i+1} : {items["Name"]}")
+
+
+
+
+
+class InventorySystem :
+    """class handling purchase and return of an item"""
 
     @staticmethod
     def after_purchase(item_list):
@@ -140,6 +154,8 @@ class Item:
                 item['Quantity'] += quantity
         print("Item Returned")
         save_items(item_list)
+
+    
 
 
 # First User interaction
@@ -219,12 +235,12 @@ else:
     if choice == 1:
         # Purchasing an item
 
-        Item.after_purchase(items_list)
+        InventorySystem.after_purchase(items_list)
 
     elif choice == 2:
         print("Return an item")
 
-        Item.return_item(items_list)
+        InventorySystem.return_item(items_list)
 
     else:
         print("\nchoose an option")
