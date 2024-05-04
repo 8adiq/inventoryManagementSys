@@ -1,17 +1,90 @@
 """An inventory system that does all the things listed below
 
-# Steps
 # Create item
 # Add item to inventory
 # Find item
 # update item
 # Delete item
+# Show list of items
 # Purchase item and update inventory and till balance
 # Return item and update inventory and till balance
 
 """
 
 import json
+
+def main():
+    # First User interaction
+    print("\nchoose an option")
+    print("1. Business Owner")
+    print("2. Customer")
+    print("3. Exit program")
+
+    first_choice = get_positive_number("Are you a Business Owner or a Customer  ")
+
+    if first_choice == 1:
+        print("\nchoose an option")
+        print("1. Add a new item")
+        print("2. Find an item")
+        print("3. Update an item")
+        print("4. Delete an item")
+        print("5. Show all items")
+        print("6. Back")
+
+        choice = get_positive_number("Choose the number for what do you intend to do ?  ")
+
+        if choice == 1:
+
+         name = str(input("Enter the name of the item  "))
+         price = get_positive_number("Enter the price of the item  ")
+         quantity = get_positive_number("Enter the quantity of the item  ")
+
+         item = Item(name, quantity, price)
+
+         Item.add_item(item, items_list)
+
+        elif choice == 2:
+            name_to_find = str(input("Enter the name of the item you are looking for  "))
+
+            Item.find_item(name_to_find, items_list)
+        elif choice == 3:
+            name_to_update = str(input("Enter the name of the item you want to update  "))
+
+            Item.update_item(name_to_update, items_list)
+
+        elif choice == 4:
+            print("\nItem list")
+            for i, items in enumerate(items_list):
+                print(f"{i+1} : {items["Name"]}")
+
+            index_to_delete = input("Enter the index of the item you want to delete  ")
+
+            if index_to_delete.isdigit():
+                index_to_delete = int(index_to_delete) -1
+                Item.delete_item(index_to_delete,items_list)
+
+        elif choice == 5:
+         print("\n  Item list")
+         print("    Name   Quantity    Price")
+         for i, items in enumerate(items_list):
+           print(f"{i+1} : {items["Name"]}     {items["Quantity"]}         {items["Price"]} ")
+
+    else:
+        print("\nchoose an option")
+        print("1. Purchase an item")
+        print("2. Return an item")
+        print("3. Back")
+
+        choice = int(input("Choose the number for what you want to do  "))
+
+        if choice == 1:
+        # Purchasing an item
+            InventorySystem.after_purchase(items_list)
+
+        elif choice == 2:
+            print("Return an item")
+
+        InventorySystem.return_item(items_list)
 
 
 def save_items(items):
@@ -30,20 +103,19 @@ def load_items():
         return []
 
 items_list = load_items()
-
-
-    
+ 
 def get_positive_number(prompt):
          """Function to make sure user enters a positive number"""
          while True:
              try:
                  value = int(input(prompt))
                  if value < 0 :
-                     print("Please enter a positive number")
+                     print("Please select any of the numbers to proceed")
                      continue
                  return value
              except ValueError:
-                 print("Invalid Input. Enter a valid integer")
+                 print("Invalid Input. Choose any of the numbers")
+
 class Item:
     """Class for creating an item"""
 
@@ -123,9 +195,6 @@ class Item:
             print(f"{i+1} : {items["Name"]}")
 
 
-
-
-
 class InventorySystem :
     """class handling purchase and return of an item"""
 
@@ -134,12 +203,12 @@ class InventorySystem :
         """Function to adjust the quantity after a sale has been made"""
 
         name = str(input("Enter the name of the item  "))
-        quantity = int(input("Enter the quantity of the item  "))
+        quantity = get_positive_number("Enter the quantity of the item  ")
 
         for item in item_list:
-               if item['Name'].lower() == name.lower():
+            if item['Name'].lower() == name.lower():
                 item["Quantity"] -= quantity
-        print("Item purchased")
+                print(f"You have purchased {quantity} {item['Name']}")
         save_items(item_list)
 
     @staticmethod
@@ -147,106 +216,14 @@ class InventorySystem :
         """Function to adjust the quantity of a item after a return"""
 
         name = str(input("Enter the name of the item  "))
-        quantity = int(input("Enter the quantity of the item  "))
+        quantity = get_positive_number("Enter the quantity of the item  ")
 
         for item in item_list:
             if item["Name"].lower() == name.lower():
                 item['Quantity'] += quantity
-        print("Item Returned")
+                print(f"{quantity} {item["Name"]} has been Returned")
         save_items(item_list)
 
     
 
-
-# First User interaction
-print("\nchoose an option")
-print("1. Business Owner")
-print("2. Customer")
-print("3. Exit program")
-
-first_choice = int(input("Are you a Business Owner or a Customer  "))
-
-
-if first_choice == 1:
-    print("\nchoose an option")
-    print("1. Add a new item")
-    print("2. Find an item")
-    print("3. Update an item")
-    print("4. Delete an item")
-    print("5. Show all items")
-    print("6. Back")
-
-    choice = int(input("Enter option 1,2,3,4 or 5 to proceed  "))
-
-    if choice == 1:
-
-        name = str(input("Enter the name of the item  "))
-        price = int(input("Enter the price of the item  "))
-        quantity = int(input("Enter the quantity of the item  "))
-
-        item = Item(name, quantity, price)
-
-        Item.add_item(item, items_list)
-
-    elif choice == 2:
-        name_to_find = str(input("Enter the name of the item you are looking for  "))
-
-        Item.find_item(name_to_find, items_list)
-    elif choice == 3:
-        name_to_update = str(input("Enter the name of the item you want to update  "))
-
-        Item.update_item(name_to_update, items_list)
-
-    elif choice == 4:
-        print("\nItem list")
-        for i, items in enumerate(items_list):
-            print(f"{i+1} : {items["Name"]}")
-
-        index_to_delete = input("Enter the index of the item you want to delete  ")
-
-        if index_to_delete.isdigit():
-            index_to_delete = int(index_to_delete) -1
-            Item.delete_item(index_to_delete,items_list)
-
-    elif choice == 5:
-        print("\n  Item list")
-        print("    Name   Quantity    Price")
-        for i, items in enumerate(items_list):
-          print(f"{i+1} : {items["Name"]}     {items["Quantity"]}         {items["Price"]} ")
-
-    else:
-        print("\nchoose an option")
-        print("1. Business Owner")
-        print("2. Customer")
-        print("3. Exit program")
-
-        first_choice = int(input("Are you a Business Owner or a Customer  "))
-
-
-
-else:
-    print("\nchoose an option")
-    print("1. Purchase an item")
-    print("2. Return an item")
-    print("3. Back")
-
-    choice = int(input("Enter option 1,2 or 3  "))
-
-    if choice == 1:
-        # Purchasing an item
-
-        InventorySystem.after_purchase(items_list)
-
-    elif choice == 2:
-        print("Return an item")
-
-        InventorySystem.return_item(items_list)
-
-    else:
-        print("\nchoose an option")
-        print("1. Business Owner")
-        print("2. Customer")
-        print("3. Exit program")
-
-        first_choice = int(input("Are you a Business Owner or a Customer  "))
-
+main()
