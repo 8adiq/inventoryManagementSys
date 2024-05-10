@@ -1,6 +1,6 @@
 """An inventory system that does all the things listed below
 
-# Create item
+# Create item+
 # Add item to inventory
 # Find item
 # update item
@@ -8,7 +8,7 @@
 # Show list of items
 # Purchase item and update inventory and till balance
 # Return item and update inventory and till balance
-
+CRUD
 """
 
 import json
@@ -19,6 +19,8 @@ def main():
     print("1. Business Owner")
     print("2. Customer")
     print("3. Exit program")
+
+    InventorySystem.after_purchase()
 
     first_choice = get_positive_number("Are you a Business Owner or a Customer  ")
 
@@ -115,6 +117,13 @@ def get_positive_number(prompt):
                  return value
              except ValueError:
                  print("Invalid Input. Choose any of the numbers")
+
+# def get_string(prompt):
+#     """ Function to make sure user enters a string"""
+#     while True:
+#         try:
+#            text = str(input(prompt))
+       
 
 class Item:
     """Class for creating an item"""
@@ -225,5 +234,5 @@ class InventorySystem :
         save_items(item_list)
 
     
-
-main()
+if __name__ == "__main":
+    main()
