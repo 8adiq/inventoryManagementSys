@@ -10,14 +10,20 @@ class Item():
         self.quantity = quantity
     
     def save_items(self,Item):
-        with open('items.csv', 'a') as file:
-            writer = csv.DictWriter(file,fieldnames=['name','price','quantity'])
-            writer.writerow=({'name':self.name,'price':self.price,'quantity':self.quantity})
+            with open('items.csv', 'a') as file:
+                writer = csv.DictWriter(file,fieldnames=['Name','Price','Quantity'])
+                writer.writerow=({'Name':self.name,'Price':self.price,'Quantity':self.quantity})
         
-
-    
-    def load_items():
-        ...
+    def load_items(self):
+        items = []
+        try:
+            with open('items.csv','r') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    items.append({'Name':row['Name'], 'Price':row['Price'], 'Quantity':row['Quantity']})
+                return items
+        except FileNotFoundError:
+            print("No Inventory file found.")
     
     def create_item():
         ...
@@ -43,23 +49,20 @@ class Item():
     def return_item():
         ...
 
+    def __str__(self):
+        return f'Name : {self.name}, Price: {self.price}, Quantity: {self.quantity}' 
+
 
 def main():
 
-    # Get item details from user
-    # name = input("Name : ")
-    # price = input("Price : ")
-    # quantity = input("Quantity : ")
-
-    item = get_item_detail()
-    print(item)
-    
-
-def get_item_detail():
+   # Get item details from user
     name = input("Name : ")
     price = input("Price : ")
     quantity = input("Quantity : ")
-    return Item(name,price,quantity)
+
+    item = Item(name,price,quantity)
+    print(item)
+    
      
 
 if __name__ == "__main__":
