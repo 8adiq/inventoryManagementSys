@@ -36,8 +36,18 @@ class Inventory():
         self.save_items()
 
     
-    def find_item():
+    def find_item(self,item_to_find):
+        self.load_items()
         ...
+        found_item = None 
+        for item in items:
+            if item['Name'] == item_to_find:
+                found_item = item
+        if found_item:
+            for key,values in found_item.items():
+                print(f"{key} : {values}")
+        else:
+            print(f"There is no item with the name {item_to_find}")
 
     def update_item():
         ...
@@ -49,8 +59,10 @@ class Inventory():
         self.load_items()
 
         if items:
+            print("*"*10,"List of items","*"*10)
+            print("Name      Price     Quantity")
             for item in items:
-                print(f"{item['Name']} {item['Price']} {item['Quantity']}")
+                print(f"{item['Name']}      {item['Price']}      {item['Quantity']}")
 
         else:
             print("Inventory is currently empty. Add a new item.")
@@ -116,6 +128,8 @@ def main():
             
         elif choice == 2:
             ...
+            item_to_find = input("Please enter the name of the item you are looking for ")
+            inventory.find_item(item_to_find)
 
         elif choice == 3:
             ...
