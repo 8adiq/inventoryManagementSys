@@ -1,9 +1,8 @@
 import csv
 import re
-import json
 
 
-items = []
+# items = []
 class Inventory():
 
 
@@ -15,8 +14,8 @@ class Inventory():
             with open(self.filename, 'a') as file:
                 writer = csv.DictWriter(file,fieldnames=['Name','Price','Quantity'])
                 if file.tell() == 0: # makes sure the file is empty before creating the header row
-                    writer.writeheader()
-                for item in self.inventory.values():
+                    writer.writeheader() # creating header row
+                for item in self.inventory.values(): 
                     writer.writerow({'Name':item['Name'],'Price':item['Price'],'Quantity':item['Quantity']})
 
     def load_items(self):
@@ -24,7 +23,7 @@ class Inventory():
             with open(self.filename,'r') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
-                    items.append({'Name':row['Name'], 'Price':row['Price'], 'Quantity':row['Quantity']})
+                    self.inventory[row['Name']] = {'Name':row['Name'], 'Price':row['Price'], 'Quantity':row['Quantity']}
         except FileNotFoundError:
             print("No Inventory file found.")
         
@@ -34,35 +33,61 @@ class Inventory():
         self.inventory[name] = {'Name':name,'Price':price,'Quantity':quantity}
         print(f'{name} added')
         self.save_items()
+        print(self.inventory)
 
     
     def find_item(self,item_to_find):
         self.load_items()
         ...
-        found_item = None 
-        for item in items:
-            if item['Name'] == item_to_find:
-                found_item = item
+        found_item = self.inventory.get(item_to_find) 
         if found_item:
-            for key,values in found_item.items():
-                print(f"{key} : {values}")
+            print(f" Name: {found_item['Name']}")
+            print(f" Price: {found_item['Price']}")
+            print(f" Quantity: {found_item['Quantity']}")
         else:
-            print(f"There is no item with the name {item_to_find}")
+            print("There is no item with the name {item_to_find}")
 
-    def update_item():
+    def update_item(self,name, price="", quantity=""):
+        self.load_items()
         ...
+        if price:
+            ...
+            for item in items:
+                if item['Name'] == name:
+                    item['Price'] = price            
+        else:
+            ...
+            for item in items:
+                if item['Name'] == name:
+                    item['Quantity'] = quantity
     
-    def delete_item():
+    def delete_item(self,name):
+        self.load_items()
         ...
+        if name:
+            for item in items:
+                if item['Name'] == name:
+                    # items.pop(item['Name'])
+                    # print(item)
+                    print(self.inventory)
+                    break
+                else:
+                    print(f"No item named {name}")
+        else:
+            print("Name can not be empty")
+        self.save_items()
+
 
     def show_all_item(self):
         self.load_items()
 
-        if items:
+        if self.inventory:
             print("*"*10,"List of items","*"*10)
             print("Name      Price     Quantity")
-            for item in items:
-                print(f"{item['Name']}      {item['Price']}      {item['Quantity']}")
+            print(self.inventory)
+            for item in self.inventory:
+                # print(f"{item['Name']}      {item['Price']}      {item['Quantity']}")
+                print(item)
 
         else:
             print("Inventory is currently empty. Add a new item.")
@@ -133,6 +158,25 @@ def main():
 
         elif choice == 3:
             ...
+            item_to_update = input("Please enter the name of the item you wish to update ")
+
+            if item_to_update:
+                print("\nChoose an option")
+                print("1. Price")
+                print("2. Quantity")
+
+                property_to_update = int(input("Choos what you would like to update"))
+
+                if property_to_update == 1:
+                    ...
+                    new_price = input("Please enter the new price ")
+                    inventory.update_item(item_to_update,new_price)
+                elif property_to_update == 2:
+                    ...
+                    new_quantity = input("Please enter the new quantity ")
+                    inventory.update_item(item_to_update,new_quantity)
+                else:
+                    print("Select the correct options")
         
         elif choice == 4:
             ...
@@ -140,6 +184,8 @@ def main():
 
         elif choice == 5:
             ...
+            item_to_delete = input("Enter the name of the item you wish to delete ")
+            inventory.delete_item(item_to_delete)
 
         else:
             exit()
