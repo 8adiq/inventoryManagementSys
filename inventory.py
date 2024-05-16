@@ -11,7 +11,7 @@ class Inventory():
         self.filename = 'items.csv'
 
     def save_items(self):
-            with open(self.filename, 'a') as file:
+            with open(self.filename, 'w') as file:
                 writer = csv.DictWriter(file,fieldnames=['Name','Price','Quantity'])
                 if file.tell() == 0: # makes sure the file is empty before creating the header row
                     writer.writeheader() # creating header row
@@ -37,7 +37,6 @@ class Inventory():
 
     
     def find_item(self,item_to_find):
-        self.load_items()
         ...
         found_item = self.inventory.get(item_to_find) 
         if found_item:
@@ -47,48 +46,46 @@ class Inventory():
         else:
             print("There is no item with the name {item_to_find}")
 
-    def update_item(self,name, price="", quantity=""):
-        self.load_items()
+    def update_item(self,name, price=None,quantity=None):
         ...
-        if price:
+        found_item = self.inventory.get(name)
+        if found_item:
             ...
-            for item in items:
-                if item['Name'] == name:
-                    item['Price'] = price            
+            if price and quantity:
+                found_item['Price'] = price
+                found_item['Quantity'] = quantity
+                print(f" {name}'s quantity has been updated to {quantity}")
+                print(f" {name}'s price has been updated to {price}")        
+            elif quantity:
+                print(found_item)
+                found_item['Quantity'] = quantity
+                print(f" {name}'s quantity has been updated to {quantity}")
+            elif price:
+             ...
+             print(found_item)
+             found_item['Price'] = price
+             print(f" {name}'s price has been updated to {price}")
         else:
-            ...
-            for item in items:
-                if item['Name'] == name:
-                    item['Quantity'] = quantity
+            print(f" There is no item named {name}")
+            return
+        
+        self.save_items()
     
     def delete_item(self,name):
-        self.load_items()
         ...
-        if name:
-            for item in items:
-                if item['Name'] == name:
-                    # items.pop(item['Name'])
-                    # print(item)
-                    print(self.inventory)
-                    break
-                else:
-                    print(f"No item named {name}")
-        else:
-            print("Name can not be empty")
-        self.save_items()
-
+        found_item = self.inventory.get(name)
+        if found_item:
+            del self.inventory[name]
+            self.save_items()
+       
 
     def show_all_item(self):
-        self.load_items()
 
         if self.inventory:
             print("*"*10,"List of items","*"*10)
-            print("Name      Price     Quantity")
-            print(self.inventory)
-            for item in self.inventory:
-                # print(f"{item['Name']}      {item['Price']}      {item['Quantity']}")
-                print(item)
-
+            print(" Name       Price   Quantity")
+            for item_name,item_data in self.inventory.items():
+                print(f" {item_name:<10} {item_data['Price']:<7} {item_data['Quantity']:<15}")
         else:
             print("Inventory is currently empty. Add a new item.")
 
@@ -121,7 +118,7 @@ class Inventory():
 def main():
 
     inventory = Inventory()
-    # inventory.load_items()
+    inventory.load_items()
 
     print('\nChoose an option')
     print('1. Business Owner')
@@ -164,19 +161,27 @@ def main():
                 print("\nChoose an option")
                 print("1. Price")
                 print("2. Quantity")
+                print("3. Both")
 
-                property_to_update = int(input("Choos what you would like to update"))
+                property_to_update = int(input("Choose what you would like to update "))
 
                 if property_to_update == 1:
                     ...
                     new_price = input("Please enter the new price ")
-                    inventory.update_item(item_to_update,new_price)
+                    inventory.update_item(item_to_update,price=new_price)
                 elif property_to_update == 2:
                     ...
                     new_quantity = input("Please enter the new quantity ")
-                    inventory.update_item(item_to_update,new_quantity)
+                    inventory.update_item(item_to_update,quantity=new_quantity)
+                elif property_to_update == 3:
+                    new_price = input("Please enter the new price")
+                    new_quantity = input("Please enter the new quantity")
+                    inventory.update_item(item_to_update,new_price,new_quantity)
                 else:
                     print("Select the correct options")
+
+            else:
+                print("Please enter the name of then item you wish to update")
         
         elif choice == 4:
             ...
