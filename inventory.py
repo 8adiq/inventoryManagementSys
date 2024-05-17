@@ -1,8 +1,6 @@
 import csv
 import re
 
-
-# items = []
 class Inventory():
 
 
@@ -33,7 +31,6 @@ class Inventory():
         self.inventory[name] = {'Name':name,'Price':price,'Quantity':quantity}
         print(f'{name} added')
         self.save_items()
-        print(self.inventory)
 
     
     def find_item(self,item_to_find):
@@ -41,28 +38,29 @@ class Inventory():
         found_item = self.inventory.get(item_to_find) 
         if found_item:
             print(f" Name: {found_item['Name']}")
-            print(f" Price: {found_item['Price']}")
+            print(f" Price: ${found_item['Price']}")
             print(f" Quantity: {found_item['Quantity']}")
         else:
             print("There is no item with the name {item_to_find}")
 
     def update_item(self,name, price=None,quantity=None):
         ...
+        self.show_all_item()
         found_item = self.inventory.get(name)
         if found_item:
             ...
             if price and quantity:
+                ...
                 found_item['Price'] = price
                 found_item['Quantity'] = quantity
                 print(f" {name}'s quantity has been updated to {quantity}")
                 print(f" {name}'s price has been updated to {price}")        
             elif quantity:
-                print(found_item)
+                ...
                 found_item['Quantity'] = quantity
                 print(f" {name}'s quantity has been updated to {quantity}")
             elif price:
              ...
-             print(found_item)
              found_item['Price'] = price
              print(f" {name}'s price has been updated to {price}")
         else:
@@ -77,6 +75,7 @@ class Inventory():
         if found_item:
             del self.inventory[name]
             self.save_items()
+            print(f"{name} has been deleted")
        
 
     def show_all_item(self):
@@ -85,27 +84,27 @@ class Inventory():
             print("*"*10,"List of items","*"*10)
             print(" Name       Price   Quantity")
             for item_name,item_data in self.inventory.items():
-                print(f" {item_name:<10} {item_data['Price']:<7} {item_data['Quantity']:<15}")
+                print(f" {item_name:<10} ${item_data['Price']:<7} {item_data['Quantity']:<15}")
         else:
             print("Inventory is currently empty. Add a new item.")
 
 
-    def purchase_item():
+    def purchase_item(self,item_to_buy,quant_bought):
         ...
+        found_item = self.inventory.get(item_to_buy)
+
+        if quant_bought <= int(found_item['Quantity']):
+            cost = int(found_item['Price']) * quant_bought
+            found_item['Quantity'] = int(found_item['Quantity']) - quant_bought
+            print(f" Your total cost would be ${cost}")
+        else:
+            print("We do not have that amount, please lower your quantity")
+        self.save_items()
+        
 
     def return_item():
         ...
 
-    
-    def after_purchase(self,amt_bought):
-        if amt_bought <= self.quantity:
-            self.quantity -= amt_bought
-            print(f'You have {self.quantity} of {self.name} left')
-        else:
-            print(f'There are not enough {self.name}')
-
-    def after_return():
-        ...
 
     def change_price():
         ...
@@ -192,14 +191,55 @@ def main():
             item_to_delete = input("Enter the name of the item you wish to delete ")
             inventory.delete_item(item_to_delete)
 
-        else:
+        elif choice == 6:
+            inventory.save_items()
+            print("Exiting the Inventory")
             exit()
+        else:
+            print("Invalid input. Enter the correct input")
     
         
 
     elif first_choice == 2:
         ...
+
+        while True:
+            customer_name = input("What is your name ? ")
+            
+            if customer_name:
+                while True:
+                    print("\nChoose an option")
+                    print("1. Purchase an item")
+                    print("2. Return an item")
+                    print("3. Exit program")
+                    choice = int(input(f"Hello {customer_name}, what do you wish to do ? "))
+
+                    if choice == 1:
+                        ...
+                        item_to_buy = input("Please enter the name of the item you wish to buy")
+                        quant_to_buy = int(input("Please enter the quantity you wish  to buy "))
+                        inventory.purchase_item(item_to_buy,quant_to_buy)
+                    elif choice == 2:
+                        ...
+                        item_to_return = input("Please enter the name of the item you are returning ")
+                        quant_to_return = int(input("Please enter the quantity "))
+                        inventory.return_item(item_to_return,quant_to_return)
+
+                    elif choice == 3:
+                        ...
+                        inventory.save_items()
+                        print("Exiting the Inventory")
+                        exit()
+                    else:
+                        ...
+                        print("Invalid input. Enter the correct option")
+                        continue
+            else:
+                print("Name cannot be empty")
+                continue
     else:
+        inventory.save_items()
+        print("Exiting the Inventory")
         exit()
    
     
