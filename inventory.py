@@ -5,7 +5,7 @@ class Inventory():
 
 
     def __init__(self):
-        self.inventory = {}
+        self.inventory = {} # initialization of main inventory dictionary
         self.filename = 'items.csv'
 
     def save_items(self):
@@ -27,14 +27,14 @@ class Inventory():
         
 
     def add_item(self,name,price,quantity):
-        ...
+        """function for adding a new item to inventory"""
         self.inventory[name] = {'Name':name,'Price':price,'Quantity':quantity}
         print(f'{name} added')
         self.save_items()
 
     
     def find_item(self,item_to_find):
-        ...
+        """function for finding a particular item in the inventory"""
         found_item = self.inventory.get(item_to_find) 
         if found_item:
             print(f" Name: {found_item['Name']}")
@@ -44,7 +44,7 @@ class Inventory():
             print("There is no item with the name {item_to_find}")
 
     def update_item(self,name, price=None,quantity=None):
-        ...
+        """updating properties of a particulat item"""
         found_item = self.inventory.get(name)
         if found_item:
             ...
@@ -69,7 +69,7 @@ class Inventory():
         self.save_items()
     
     def delete_item(self,name):
-        ...
+        """deleting an item from the inventory"""
         found_item = self.inventory.get(name)
         if found_item:
             del self.inventory[name]
@@ -78,7 +78,7 @@ class Inventory():
        
 
     def show_all_item(self):
-
+        """showing all items in the inventory"""
         if self.inventory:
             print("*"*10,"List of items","*"*10)
             print(" Name       Price   Quantity")
@@ -89,7 +89,7 @@ class Inventory():
 
 
     def purchase_item(self,item_to_buy,quant_bought):
-        ...
+        """adjusting stock after a purchase"""
         self.load_items()
         print(f"searching for {item_to_buy}")
         found_item = self.inventory.get(item_to_buy)
@@ -104,11 +104,10 @@ class Inventory():
         else:
             print(f"Sorry we only have {found_item['Quantity']} {item_to_buy} left in stock")
         self.save_items()
-        # print(found_item['Quantity'])
         
 
     def return_item(self,item_to_return,quant_to_return):
-        ...
+        """adjusting stock after an item has been returned"""
         found_item = self.inventory.get(item_to_return)
         refund = int(found_item['Price']) * quant_to_return
         found_item['Quantity'] = int(found_item['Quantity']) + quant_to_return
@@ -121,9 +120,10 @@ class Inventory():
 
 
 def main():
+    """ main function that interacts with the user for inputs """
 
-    inventory = Inventory()
-    inventory.load_items()
+    inventory = Inventory() #laoding an instance of the inventory class
+    inventory.load_items()  #loading all items in the inventory
 
     print('\nChoose an option')
     print('1. Business Owner')
@@ -146,7 +146,6 @@ def main():
 
         if choice == 1:
             ...
-            # Get item details from user
             name = input("Name : ")
             price = input("Price : ")
             quantity = input("Quantity : ")
@@ -207,7 +206,6 @@ def main():
             print("Invalid input. Enter the correct input")
     
         
-
     elif first_choice == 2:
         ...
 
@@ -215,7 +213,6 @@ def main():
             customer_name = input("What is your name ? ")
             
             if customer_name:
-                # while True:
                     print("\nChoose an option")
                     print("1. Purchase an item")
                     print("2. Return an item")
@@ -242,11 +239,9 @@ def main():
                     else:
                         ...
                         print("Invalid input. Enter the correct option")
-                        continue
             else:
                 print("Name cannot be empty")
                 continue
-            # print(customer_name)
             break
     else:
         inventory.save_items()
