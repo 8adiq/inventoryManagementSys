@@ -28,6 +28,10 @@ class Inventory():
 
     def add_item(self,name,price,quantity):
         """function for adding a new item to inventory"""
+        if not self.get_valid_name(name) or not self.get_valid_number(price) or not self.get_valid_number(quantity):
+            print("Invalid input. Please check name, price and quantity.")
+            return
+
         self.inventory[name] = {'Name':name,'Price':price,'Quantity':quantity}
         print(f'{name} added')
         self.save_items()
@@ -99,7 +103,7 @@ class Inventory():
             cost = int(found_item['Price']) * quant_bought
             found_item['Quantity'] = int(found_item['Quantity']) - quant_bought
             print(f"Item : {item_to_buy}")
-            print(f'Quantity : {quant_bought}')
+            print(f'Quantity : ${quant_bought}')
             print(f"Your total cost would be ${cost}")
         else:
             print(f"Sorry we only have {found_item['Quantity']} {item_to_buy} left in stock")
@@ -113,6 +117,30 @@ class Inventory():
         found_item['Quantity'] = int(found_item['Quantity']) + quant_to_return
         print(f"An amount of ${refund} would be refunded to you.")
         self.save_items()
+
+    def get_valid_number(self,value):
+        ...
+        pattern = r"^[+]?[0-9]*(\.[0-9]+)?$"
+        return  re.match(pattern, str(value)) is not None
+
+    def get_valid_name(self,name):
+        ...
+        pattern = r"^[a-zA-Z _]+$"
+        return re.match(pattern,name) is not None
+        
+
+    def get_valid_choice(self,min_value,max_value):
+        ...
+        while True:
+            choice = int(input(f"Enter your choice {min_value}-{max_value}  "))
+            try:
+                if min_value <= choice <= max_value:
+                    return choice
+                else:
+                    print(f" Invalid choice. Enter a value between {min_value} and {max_value}")
+            except ValueError:
+                print("Invalid input. Enter a valid number. ")
+
 
     def __str__(self):
         return f'Name : {self.name}, Price: {self.price}, Quantity: {self.quantity}' 
@@ -130,7 +158,7 @@ def main():
     print('2. Customer')
     print('3. Exit Program')
 
-    first_choice = int(input('Proceed as a Business Owner or Customer '))
+    first_choice = int(inventory.get_valid_choice(1,3))
 
     if first_choice == 1:
 
@@ -142,13 +170,13 @@ def main():
         print('5. Delete an item')
         print('6. Exit program')
 
-        choice = int(input('What do you wish to do '))
+        choice = int(inventory.get_valid_choice(1,6))
 
         if choice == 1:
             ...
             name = input("Name : ")
-            price = input("Price : ")
-            quantity = input("Quantity : ")
+            price = float(input("Price : "))
+            quantity = int(input("Quantity : "))
 
             inventory.add_item(name,price,quantity)
             
@@ -186,7 +214,7 @@ def main():
                     print("Select the correct options")
 
             else:
-                print("Please enter the name of then item you wish to update")
+                print("Please enter the name of then item you wish to update ")
         
         elif choice == 4:
             ...
@@ -210,19 +238,17 @@ def main():
         ...
 
         while True:
-            customer_name = input("What is your name ? ")
-            
-            if customer_name:
+
                     print("\nChoose an option")
                     print("1. Purchase an item")
                     print("2. Return an item")
                     print("3. Exit program")
-                    choice = int(input(f"Hello {customer_name}, what do you wish to do ? "))
+                    choice = int(inventory.get_valid_choice(1,3))
 
                     if choice == 1:
                         ...
                         inventory.show_all_item()
-                        item_to_buy = input("Please enter the name of the item you wish to buy")
+                        item_to_buy = input("Please enter the name of the item you wish to buy ")
                         quant_to_buy = int(input("Please enter the quantity you wish  to buy "))
                         inventory.purchase_item(item_to_buy,quant_to_buy)
                     elif choice == 2:
@@ -239,10 +265,6 @@ def main():
                     else:
                         ...
                         print("Invalid input. Enter the correct option")
-            else:
-                print("Name cannot be empty")
-                continue
-            break
     else:
         inventory.save_items()
         print("Exiting the Inventory")
